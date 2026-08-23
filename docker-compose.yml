@@ -1,0 +1,31 @@
+services:
+
+  application-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.application
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rag-service
+      - llm-service
+
+  rag-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.rag
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./chroma_db:/app/chroma_db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  llm-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.llm
+    ports:
+      - "8002:8002"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

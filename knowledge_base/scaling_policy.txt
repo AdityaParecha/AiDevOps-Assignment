@@ -1,0 +1,19 @@
+Application Scaling Policy
+
+The application should maintain sufficient capacity to handle incoming traffic while avoiding unnecessary resource consumption.
+
+Scale-up considerations:
+
+1. Sustained high CPU utilization can indicate that additional replicas are required.
+2. Increasing request rate can indicate an approaching capacity limit.
+3. Increasing request latency can indicate that the current number of replicas is insufficient.
+4. A rapidly increasing request queue can indicate that additional capacity is required.
+5. Sudden traffic spikes should be handled carefully because reactive scaling may take time to create and initialize new pods.
+
+Scale-down considerations:
+
+1. Scale-down should be more conservative than scale-up.
+2. Temporary reductions in traffic should not immediately cause aggressive scale-down.
+3. The system should avoid repeatedly scaling up and down in response to short-term fluctuations.
+
+The objective of scaling is not simply to maximize the number of pods. The objective is to maintain acceptable application performance while using resources efficiently.

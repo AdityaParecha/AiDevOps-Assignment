@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DevOps AI Assistant</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                <div>
+                    <h1>DevOps Assistant</h1>
+                    <span>RAG + Code Llama</span>
+                </div>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <div class="status-dot"></div>
+
+                <div>
+                    <strong>System Online</strong>
+                    <span>Docker services connected</span>
+                </div>
+
+            </div>
+
+
+            <div class="architecture">
+
+                <p class="label">PIPELINE</p>
+
+                <div class="arch-item">
+                    <span>01</span>
+                    Application API
+                </div>
+
+                <div class="line"></div>
+
+                <div class="arch-item">
+                    <span>02</span>
+                    RAG Service
+                </div>
+
+                <div class="line"></div>
+
+                <div class="arch-item">
+                    <span>03</span>
+                    Chroma DB
+                </div>
+
+                <div class="line"></div>
+
+                <div class="arch-item">
+                    <span>04</span>
+                    Code Llama
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-footer">
+                Dockerized • Ollama
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN CHAT ================= -->
+
+        <main class="chat-area">
+
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <p class="eyebrow">
+                        AI-POWERED OPERATIONS
+                    </p>
+
+                    <h2>
+                        Ask your DevOps assistant
+                    </h2>
+
+                </div>
+
+
+                <div class="api-pill">
+
+                    <span class="pulse"></span>
+
+                    API :8000
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= MESSAGES ================= -->
+
+            <section id="messages" class="messages">
+
+
+                <!-- Welcome screen -->
+
+                <div class="welcome">
+
+                    <div class="welcome-icon">
+                        ✦
+                    </div>
+
+
+                    <h3>
+                        How can I help?
+                    </h3>
+
+
+                    <p>
+                        Ask about autoscaling, Kubernetes,
+                        incidents, or your DevOps knowledge base.
+                    </p>
+
+
+                    <div class="suggestions">
+
+                        <button
+                            type="button"
+                            data-question="Why can reactive autoscaling be slow during a sudden traffic spike?">
+
+                            Reactive autoscaling
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            data-question="How should scale-down decisions be handled?">
+
+                            Scale-down policy
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            data-question="What happened during the sudden traffic spike incident?">
+
+                            Scaling incident
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= INPUT ================= -->
+
+            <div class="composer-wrap">
+
+                <form id="chatForm" class="composer">
+
+                    <textarea
+                        id="question"
+                        rows="1"
+                        placeholder="Ask a DevOps question..."
+                        autocomplete="off">
+                    </textarea>
+
+
+                    <button
+                        id="sendButton"
+                        type="submit">
+
+                        <span id="sendText">
+                            Ask
+                        </span>
+
+                        <span
+                            id="spinner"
+                            class="spinner hidden">
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <div class="hint">
+                    Enter to send • Shift + Enter for a new line
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="./script.js"></script>
+
+</body>
+
+</html>

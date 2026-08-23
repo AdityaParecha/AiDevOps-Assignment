@@ -1,0 +1,22 @@
+Example Scaling Incidents
+
+Incident 1: Sudden Traffic Spike
+
+A sudden increase in incoming requests caused CPU utilization to increase rapidly. The existing replicas were unable to handle the increased workload immediately. Reactive autoscaling eventually increased the number of replicas, but the application experienced increased latency during the scaling delay.
+
+Lesson:
+Reactive scaling may respond too late to sudden traffic increases. Predicting upcoming demand can allow capacity to be added before the spike arrives.
+
+Incident 2: Aggressive Scale Down
+
+Traffic temporarily decreased for a short period. The application immediately reduced the number of replicas. Traffic then increased again, causing another scale-up event.
+
+Lesson:
+Scale-down decisions should be conservative and should account for temporary traffic fluctuations.
+
+Incident 3: CPU Does Not Represent the Bottleneck
+
+An application can experience increased request latency even when CPU utilization is relatively low. This can happen when another resource, such as a request queue, database connection pool, or external dependency, becomes the bottleneck.
+
+Lesson:
+CPU alone may not always be a sufficient scaling signal. Multiple application and infrastructure metrics may provide a better representation of system health.

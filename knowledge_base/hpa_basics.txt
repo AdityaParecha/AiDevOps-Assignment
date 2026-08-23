@@ -1,0 +1,11 @@
+Kubernetes Horizontal Pod Autoscaler (HPA)
+
+The Kubernetes Horizontal Pod Autoscaler automatically adjusts the number of pod replicas based on observed resource utilization or other metrics.
+
+HPA commonly uses CPU and memory utilization as scaling signals. When resource utilization increases above the configured target, HPA can increase the number of replicas. When utilization decreases, HPA can reduce the number of replicas.
+
+Reactive autoscaling has an inherent delay. The system first needs to observe the increase in load, calculate the desired number of replicas, create additional pods, and wait for those pods to become ready.
+
+Because of this delay, reactive autoscaling may not respond quickly enough to sudden traffic spikes. During rapid load increases, applications may experience increased latency or errors before additional capacity becomes available.
+
+HPA is therefore useful for maintaining application capacity, but scaling decisions based only on current CPU or memory may not always capture the actual state of an application.
