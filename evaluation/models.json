@@ -1,0 +1,38 @@
+[
+  {
+    "model": "gemma3:1b",
+    "size_gb": 0.815
+  },
+  {
+    "model": "qwen3.5:0.8b",
+    "size_gb": 1.0
+  },
+  {
+    "model": "mistral:latest",
+    "size_gb": 4.4
+  },
+  {
+    "model": "hermes3:latest",
+    "size_gb": 4.7
+  },
+  {
+    "model": "dolphin3:latest",
+    "size_gb": 4.9
+  },
+  {
+    "model": "rnj-1:latest",
+    "size_gb": 5.1
+  },
+  {
+    "model": "qwen3:latest",
+    "size_gb": 5.2
+  },
+  {
+    "model": "qwen3.5:4b-q8_0",
+    "size_gb": 5.3
+  },
+  {
+    "model": "granite4.2:latest",
+    "size_gb": 5.3
+  }
+]

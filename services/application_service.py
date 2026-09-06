@@ -1,9 +1,14 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+
 import requests
 
-app = FastAPI(title="Application Service")
+from pydantic import BaseModel
+
+
+app = FastAPI()
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,48 +17,95 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 RAG_SERVICE_URL = "http://rag-service:8001/retrieve"
 LLM_SERVICE_URL = "http://llm-service:8002/generate"
 
+
 class UserRequest(BaseModel):
     question: str
+    model: str = "qwen3.5:0.8b"
+
+
+@app.get("/")
+def root():
+    return {
+        "service": "Application Service",
+        "status": "running"
+    }
 
 
 @app.post("/ask")
-def ask_question(request: UserRequest):
+def ask(request: UserRequest):
 
-    # Step 1: Ask RAG service for relevant context
+    # -----------------------------
+    # Step 1: Retrieve knowledge
+    # -----------------------------
+
     rag_response = requests.post(
         RAG_SERVICE_URL,
         json={
             "question": request.question,
             "n_results": 3
-        }
+        },
+        timeout=120
     )
 
     rag_response.raise_for_status()
 
     rag_data = rag_response.json()
 
-    context = rag_data["context"]
-    sources = rag_data["sources"]
+    context = rag_data.get("context", "")
+    sources = rag_data.get("sources", [])
 
-    # Step 2: Send question + retrieved context to LLM service
+
+    # -----------------------------
+    # Step 2: Generate answer
+    # -----------------------------
+
     llm_response = requests.post(
         LLM_SERVICE_URL,
         json={
             "question": request.question,
-            "context": context
-        }
+            "context": context,
+            "model": request.model
+        },
+        timeout=600
     )
 
     llm_response.raise_for_status()
 
     llm_data = llm_response.json()
 
-    # Step 3: Return final response
+
+    # -----------------------------
+    # Step 3: Return complete result
+    # -----------------------------
+
     return {
         "question": request.question,
-        "answer": llm_data["response"],
-        "sources": sources
+        "answer": llm_data.get("response", ""),
+        "model": llm_data.get("model", request.model),
+
+        "sources": sources,
+
+        "prompt_tokens": llm_data.get(
+            "prompt_tokens",
+            0
+        ),
+
+        "output_tokens": llm_data.get(
+            "output_tokens",
+            0
+        ),
+
+        "total_tokens": llm_data.get(
+            "total_tokens",
+            0
+        ),
+
+        "generation_time_ms": llm_data.get(
+            "generation_time_ms",
+            0
+        )
     }

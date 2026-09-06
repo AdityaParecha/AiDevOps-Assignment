@@ -1,0 +1,152 @@
+[
+  {
+    "id": "Q01",
+    "category": "basic",
+    "question": "What is reactive autoscaling?",
+    "expected_sources": ["hpa_basics.txt"]
+  },
+  {
+    "id": "Q02",
+    "category": "basic",
+    "question": "Why can reactive autoscaling be slow during a sudden traffic spike?",
+    "expected_sources": ["hpa_basics.txt"]
+  },
+  {
+    "id": "Q03",
+    "category": "basic",
+    "question": "What steps occur before newly created replicas can handle traffic?",
+    "expected_sources": ["hpa_basics.txt"]
+  },
+  {
+    "id": "Q04",
+    "category": "incident",
+    "question": "What can happen when there is a sudden traffic spike and the system relies only on reactive scaling?",
+    "expected_sources": ["scaling_incidents.txt"]
+  },
+  {
+    "id": "Q05",
+    "category": "incident",
+    "question": "What is an important lesson from the sudden traffic spike incident?",
+    "expected_sources": ["scaling_incidents.txt"]
+  },
+  {
+    "id": "Q06",
+    "category": "incident",
+    "question": "Why can aggressive scale-down cause repeated scaling activity?",
+    "expected_sources": ["scaling_incidents.txt"]
+  },
+  {
+    "id": "Q07",
+    "category": "policy",
+    "question": "What scale-down approach is recommended when traffic temporarily decreases?",
+    "expected_sources": ["scaling_policy.txt"]
+  },
+  {
+    "id": "Q08",
+    "category": "incident",
+    "question": "Why is CPU utilization not always the actual bottleneck?",
+    "expected_sources": ["scaling_incidents.txt"]
+  },
+  {
+    "id": "Q09",
+    "category": "incident",
+    "question": "What could cause increased latency even when CPU utilization is not high?",
+    "expected_sources": ["scaling_incidents.txt"]
+  },
+  {
+    "id": "Q10",
+    "category": "comparison",
+    "question": "What is the difference between reactive scaling and pre-scaling?",
+    "expected_sources": ["hpa_basics.txt", "scaling_policy.txt"]
+  },
+  {
+    "id": "Q11",
+    "category": "policy",
+    "question": "How can predictive demand planning reduce the impact of traffic spikes?",
+    "expected_sources": ["scaling_policy.txt"]
+  },
+  {
+    "id": "Q12",
+    "category": "policy",
+    "question": "How should a scaling system handle temporary traffic fluctuations?",
+    "expected_sources": ["scaling_policy.txt"]
+  },
+  {
+    "id": "Q13",
+    "category": "basic",
+    "question": "Explain the sequence from observing load to calculating replicas, creating pods, and having capacity become available.",
+    "expected_sources": ["hpa_basics.txt"]
+  },
+  {
+    "id": "Q14",
+    "category": "basic",
+    "question": "Why can latency increase before additional capacity becomes available?",
+    "expected_sources": ["hpa_basics.txt"]
+  },
+  {
+    "id": "Q15",
+    "category": "policy",
+    "question": "Why can immediately scaling down be harmful if traffic returns shortly afterward?",
+    "expected_sources": ["scaling_policy.txt"]
+  },
+  {
+    "id": "Q16",
+    "category": "comparison",
+    "question": "Compare reactive scaling and predictive scaling in terms of response to demand changes.",
+    "expected_sources": ["hpa_basics.txt", "scaling_policy.txt"]
+  },
+  {
+    "id": "Q17",
+    "category": "incident",
+    "question": "What combined lessons can be learned from the scaling incidents?",
+    "expected_sources": ["scaling_incidents.txt"]
+  },
+  {
+    "id": "Q18",
+    "category": "basic",
+    "question": "What causes the delay between detecting increased load and having new replicas ready?",
+    "expected_sources": ["hpa_basics.txt"]
+  },
+  {
+    "id": "Q19",
+    "category": "policy",
+    "question": "How should scaling decisions be made during temporary traffic fluctuations?",
+    "expected_sources": ["scaling_policy.txt"]
+  },
+  {
+    "id": "Q20",
+    "category": "incident",
+    "question": "Why might adding more replicas fail to solve every latency problem?",
+    "expected_sources": ["scaling_incidents.txt"]
+  },
+  {
+    "id": "Q21",
+    "category": "unanswerable",
+    "question": "What exact Kubernetes version is used by the system?",
+    "expected_sources": []
+  },
+  {
+    "id": "Q22",
+    "category": "unanswerable",
+    "question": "What exact memory limit is configured for each application pod?",
+    "expected_sources": []
+  },
+  {
+    "id": "Q23",
+    "category": "unanswerable",
+    "question": "Which cloud provider hosts this system?",
+    "expected_sources": []
+  },
+  {
+    "id": "Q24",
+    "category": "unanswerable",
+    "question": "Which database engine is used by the application?",
+    "expected_sources": []
+  },
+  {
+    "id": "Q25",
+    "category": "unanswerable",
+    "question": "What is the name of the system administrator?",
+    "expected_sources": []
+  }
+]
