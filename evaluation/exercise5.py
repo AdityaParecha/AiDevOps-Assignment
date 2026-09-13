@@ -8,15 +8,15 @@ from pathlib import Path
 # ============================================================
 
 APP_URL = "http://127.0.0.1:8000/ask"
+RAG_URL = "http://127.0.0.1:8001/retrieve"
+OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 
-# Choose 3 models for comparison
 MODELS = [
     "gemma3:1b",
     "mistral:latest",
     "granite4.2:latest"
 ]
 
-# Five representative questions from Exercise 3
 QUESTIONS = [
     {
         "id": "Q01",
@@ -44,13 +44,53 @@ OUTPUT_FILE = "exercise5_comparison.json"
 
 
 # ============================================================
-# CALL EXISTING APPLICATION
+# HELPERS
+# ============================================================
+
+def get_answer(data):
+    """Support either 'answer' or 'response' depending on service schema."""
+    return data.get("answer") or data.get("response") or ""
+
+
+# ============================================================
+# RETRIEVE CONTEXT DIRECTLY
+# ============================================================
+
+def retrieve_context(question):
+    """
+    Calls the existing RAG service directly so that the exact
+    retrieved context used for Exercise 5 is saved in JSON.
+    """
+
+    response = requests.post(
+        RAG_URL,
+        json={
+            "question": question,
+            "n_results": 3
+        },
+        timeout=120
+    )
+
+    response.raise_for_status()
+    data = response.json()
+
+    return {
+        "context": data.get("context", ""),
+        "sources": data.get("sources", []),
+        "distances": data.get("distances", [])
+    }
+
+
+# ============================================================
+# WITH CONTEXT
 # ============================================================
 
 def call_with_context(question, model):
     """
-    Existing RAG pipeline:
-    frontend/application -> RAG -> context -> LLM
+    Uses the existing application /ask endpoint.
+
+    The RAG context is retrieved separately above only so we can
+    record the actual context in the experiment JSON.
     """
 
     start = time.perf_counter()
@@ -67,30 +107,35 @@ def call_with_context(question, model):
     latency_ms = (time.perf_counter() - start) * 1000
 
     response.raise_for_status()
-
     data = response.json()
 
     return {
         "condition": "with_context",
-        "latency_ms": latency_ms,
-        "response": data
+        "latency_ms": round(latency_ms, 2),
+        "answer": get_answer(data),
+        "model": data.get("model", model),
+        "prompt_tokens": data.get("prompt_tokens"),
+        "output_tokens": data.get("output_tokens"),
+        "total_tokens": data.get("total_tokens"),
+        "generation_time_ms": data.get("generation_time_ms")
     }
 
 
 # ============================================================
-# CALL LLM WITHOUT RAG
+# WITHOUT CONTEXT
 # ============================================================
 
 def call_without_context(question, model):
     """
-    Direct Ollama call.
-    No RAG retrieval and no retrieved context.
+    Calls Ollama directly.
+
+    No RAG retrieval and no retrieved context are supplied.
     """
 
     start = time.perf_counter()
 
     response = requests.post(
-        "http://127.0.0.1:11434/api/generate",
+        OLLAMA_URL,
         json={
             "model": model,
             "prompt": question,
@@ -102,74 +147,21 @@ def call_without_context(question, model):
     latency_ms = (time.perf_counter() - start) * 1000
 
     response.raise_for_status()
-
     data = response.json()
+
+    prompt_tokens = data.get("prompt_eval_count")
+    output_tokens = data.get("eval_count")
 
     return {
         "condition": "without_context",
-        "latency_ms": latency_ms,
-        "response": data
-    }
-
-
-# ============================================================
-# NORMALIZE WITH-CONTEXT RESULT
-# ============================================================
-
-def normalize_with_context(result):
-    data = result["response"]
-
-    return {
-        "condition": result["condition"],
-        "latency_ms": round(result["latency_ms"], 2),
-
+        "latency_ms": round(latency_ms, 2),
         "answer": data.get("response", ""),
-
-        "retrieved_context": data.get("context", ""),
-
-        "sources": data.get("sources", []),
-
-        "distances": data.get("distances", []),
-
-        "model": data.get("model", ""),
-
-        "prompt_tokens": data.get("prompt_tokens"),
-        "output_tokens": data.get("output_tokens"),
-        "total_tokens": data.get("total_tokens"),
-
-        "generation_time_ms": data.get("generation_time_ms")
-    }
-
-
-# ============================================================
-# NORMALIZE WITHOUT-CONTEXT RESULT
-# ============================================================
-
-def normalize_without_context(result, model):
-    data = result["response"]
-
-    return {
-        "condition": result["condition"],
-        "latency_ms": round(result["latency_ms"], 2),
-
-        "answer": data.get("response", ""),
-
-        "retrieved_context": "",
-
-        "sources": [],
-
-        "distances": [],
-
         "model": model,
-
-        "prompt_tokens": data.get("prompt_eval_count"),
-        "output_tokens": data.get("eval_count"),
-
+        "prompt_tokens": prompt_tokens,
+        "output_tokens": output_tokens,
         "total_tokens": (
-            (data.get("prompt_eval_count") or 0)
-            + (data.get("eval_count") or 0)
+            (prompt_tokens or 0) + (output_tokens or 0)
         ),
-
         "generation_time_ms": (
             data.get("eval_duration", 0) / 1_000_000
             if data.get("eval_duration")
@@ -179,25 +171,20 @@ def normalize_without_context(result, model):
 
 
 # ============================================================
-# MAIN EXPERIMENT
+# MAIN
 # ============================================================
 
 def main():
 
     results = {
         "experiment": "Exercise 5 - RAG Context Comparison",
-
         "description": (
             "Comparison of three LLM models on five questions "
             "with and without retrieved RAG context."
         ),
-
         "models": MODELS,
-
         "questions": QUESTIONS,
-
         "total_experiments": len(MODELS) * len(QUESTIONS) * 2,
-
         "results": []
     }
 
@@ -212,16 +199,41 @@ def main():
 
         for q in QUESTIONS:
 
-            question_id = q["id"]
+            qid = q["id"]
             question = q["question"]
 
-            print(f"\n{question_id}: {question}")
+            print(f"\n{qid}: {question}")
+
+            # ------------------------------------------------
+            # RETRIEVE CONTEXT
+            # ------------------------------------------------
+
+            try:
+                print("  Retrieving context...")
+
+                retrieval = retrieve_context(question)
+
+                print(
+                    "  Sources:",
+                    retrieval["sources"]
+                )
+
+            except Exception as e:
+
+                print(f"  RAG ERROR: {e}")
+
+                retrieval = {
+                    "context": "",
+                    "sources": [],
+                    "distances": [],
+                    "error": str(e)
+                }
 
             # ------------------------------------------------
             # WITH CONTEXT
             # ------------------------------------------------
 
-            print("  [1/2] Running WITH context...")
+            print("  [1/2] WITH context...")
 
             try:
 
@@ -230,41 +242,53 @@ def main():
                     model
                 )
 
-                normalized = normalize_with_context(result)
-
                 results["results"].append({
-                    "question_id": question_id,
+                    "question_id": qid,
                     "question": question,
                     "model": model,
-                    **normalized
+                    "condition": "with_context",
+
+                    "retrieved_context": retrieval["context"],
+                    "sources": retrieval["sources"],
+                    "distances": retrieval["distances"],
+
+                    "answer": result["answer"],
+                    "latency_ms": result["latency_ms"],
+                    "prompt_tokens": result["prompt_tokens"],
+                    "output_tokens": result["output_tokens"],
+                    "total_tokens": result["total_tokens"],
+                    "generation_time_ms": result["generation_time_ms"]
                 })
 
                 current += 1
 
                 print(
-                    f"       Done "
-                    f"({normalized['latency_ms']:.2f} ms)"
+                    f"       Answer captured "
+                    f"({result['latency_ms']:.2f} ms)"
                 )
 
             except Exception as e:
 
                 results["results"].append({
-                    "question_id": question_id,
+                    "question_id": qid,
                     "question": question,
                     "model": model,
                     "condition": "with_context",
+                    "retrieved_context": retrieval["context"],
+                    "sources": retrieval["sources"],
+                    "distances": retrieval["distances"],
+                    "answer": "",
                     "error": str(e)
                 })
 
                 current += 1
-
                 print(f"       ERROR: {e}")
 
             # ------------------------------------------------
             # WITHOUT CONTEXT
             # ------------------------------------------------
 
-            print("  [2/2] Running WITHOUT context...")
+            print("  [2/2] WITHOUT context...")
 
             try:
 
@@ -273,42 +297,49 @@ def main():
                     model
                 )
 
-                normalized = normalize_without_context(
-                    result,
-                    model
-                )
-
                 results["results"].append({
-                    "question_id": question_id,
+                    "question_id": qid,
                     "question": question,
                     "model": model,
-                    **normalized
+                    "condition": "without_context",
+
+                    "retrieved_context": "",
+                    "sources": [],
+                    "distances": [],
+
+                    "answer": result["answer"],
+                    "latency_ms": result["latency_ms"],
+                    "prompt_tokens": result["prompt_tokens"],
+                    "output_tokens": result["output_tokens"],
+                    "total_tokens": result["total_tokens"],
+                    "generation_time_ms": result["generation_time_ms"]
                 })
 
                 current += 1
 
                 print(
-                    f"       Done "
-                    f"({normalized['latency_ms']:.2f} ms)"
+                    f"       Answer captured "
+                    f"({result['latency_ms']:.2f} ms)"
                 )
 
             except Exception as e:
 
                 results["results"].append({
-                    "question_id": question_id,
+                    "question_id": qid,
                     "question": question,
                     "model": model,
                     "condition": "without_context",
+                    "retrieved_context": "",
+                    "sources": [],
+                    "distances": [],
+                    "answer": "",
                     "error": str(e)
                 })
 
                 current += 1
-
                 print(f"       ERROR: {e}")
 
-            print(
-                f"  Progress: {current}/{total}"
-            )
+            print(f"  Progress: {current}/{total}")
 
     # ========================================================
     # SAVE JSON
@@ -321,7 +352,6 @@ def main():
         "w",
         encoding="utf-8"
     ) as f:
-
         json.dump(
             results,
             f,
@@ -330,11 +360,10 @@ def main():
         )
 
     print("\n" + "=" * 70)
-    print("EXPERIMENT COMPLETE")
+    print("EXERCISE 5 COMPLETE")
     print("=" * 70)
-
     print(f"Total experiments: {total}")
-    print(f"Results saved to: {output_path.resolve()}")
+    print(f"Saved to: {output_path.resolve()}")
 
 
 if __name__ == "__main__":
