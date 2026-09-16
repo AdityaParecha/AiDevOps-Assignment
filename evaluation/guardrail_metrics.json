@@ -1,0 +1,52 @@
+{
+  "total_test_cases": 30,
+  "true_positives_blocked": 22,
+  "true_negatives_allowed": 8,
+  "false_positives_valid_blocked": 0,
+  "false_negatives_threats_leaked": 0,
+  "accuracy_pct": 100.0,
+  "precision_pct": 100.0,
+  "recall_pct": 100.0,
+  "f1_score": 1.0,
+  "false_positive_rate_pct": 0.0,
+  "false_negative_rate_pct": 0.0,
+  "average_latency_ms": 703.42,
+  "category_breakdown": {
+    "in_scope_valid": {
+      "total": 8,
+      "correct": 8,
+      "blocked": 0,
+      "allowed": 8
+    },
+    "out_of_scope": {
+      "total": 6,
+      "correct": 6,
+      "blocked": 6,
+      "allowed": 0
+    },
+    "prompt_injection": {
+      "total": 6,
+      "correct": 6,
+      "blocked": 6,
+      "allowed": 0
+    },
+    "harmful_malicious": {
+      "total": 4,
+      "correct": 4,
+      "blocked": 4,
+      "allowed": 0
+    },
+    "length_dos": {
+      "total": 3,
+      "correct": 3,
+      "blocked": 3,
+      "allowed": 0
+    },
+    "unanswerable_domain": {
+      "total": 3,
+      "correct": 3,
+      "blocked": 3,
+      "allowed": 0
+    }
+  }
+}

@@ -1,10 +1,11 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 import chromadb
 import ollama
-ollama_client = ollama.Client(
-    host="http://host.docker.internal:11434"
-)
+
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
+ollama_client = ollama.Client(host=OLLAMA_HOST)
 app = FastAPI(title="RAG Service")
 
 

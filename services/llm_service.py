@@ -1,3 +1,4 @@
+import os
 import ollama
 
 from fastapi import FastAPI
@@ -6,10 +7,8 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-
-ollama_client = ollama.Client(
-    host="http://host.docker.internal:11434"
-)
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
+ollama_client = ollama.Client(host=OLLAMA_HOST)
 
 
 class LLMRequest(BaseModel):

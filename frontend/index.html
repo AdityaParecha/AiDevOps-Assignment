@@ -108,12 +108,18 @@
                 </div>
 
 
-                <div class="api-pill">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <a href="../index.html" style="text-decoration:none; font-size: 12px; font-weight: 600; color: #6ea8fe; background: #17223a; border: 1px solid #263552; padding: 6px 12px; border-radius: 8px;">📊 View Dashboard</a>
 
-                    <span class="pulse"></span>
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #a0aec0; cursor: pointer; background: #1a202c; padding: 6px 12px; border-radius: 20px; border: 1px solid #2d3748;">
+                        <input type="checkbox" id="guardrailsToggle" checked style="cursor: pointer; accent-color: #48bb78;">
+                        <span id="guardrailLabel" style="color: #68d391; font-weight: 600;">Guardrails ON</span>
+                    </label>
 
-                    API :8000
-
+                    <div class="api-pill">
+                        <span class="pulse"></span>
+                        API :8000
+                    </div>
                 </div>
 
             </header>
