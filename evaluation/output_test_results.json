@@ -1,0 +1,1868 @@
+{
+  "timestamp": 1789366024.327351,
+  "total_test_cases": 12,
+  "guarded_acceptance_rate_pct": 91.66666666666666,
+  "unguarded_acceptance_rate_pct": 41.66666666666667,
+  "guarded_condition_passes": {
+    "Relevance": 12,
+    "ContextSupport": 11,
+    "UnsupportedClaims": 12,
+    "FormatCompliance": 12,
+    "SufficiencyAnswer": 12,
+    "AppropriateRefusal": 12
+  },
+  "unguarded_condition_passes": {
+    "Relevance": 12,
+    "ContextSupport": 5,
+    "UnsupportedClaims": 12,
+    "FormatCompliance": 12,
+    "SufficiencyAnswer": 12,
+    "AppropriateRefusal": 7
+  },
+  "detailed_results": [
+    {
+      "test_id": "OT-01",
+      "category": "basic",
+      "question": "What is reactive autoscaling?",
+      "expected_behavior": "ANSWER",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "Reactive autoscaling in Kubernetes Horizontal Pod Autoscaler (HPA) is a delay-based approach where the system first needs to observe an increase in resource utilization (such as CPU and memory) before it can adjust the number of replicas. This means that when incoming requests suddenly increase, the existing replicas may not be able to handle the load immediately, leading to increased latency or errors before additional capacity becomes available.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (2 matching terms).",
+            "details": {
+              "matching_terms": [
+                "reactive",
+                "autoscaling"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "2/2 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 2,
+              "total_sentences": 2
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 451 chars, no prompt leakage).",
+            "details": {
+              "length": 451
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "basic"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "basic"
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "Reactive autoscaling in Kubernetes Horizontal Pod Autoscaler (HPA) is a delayed response mechanism. When resource utilization (such as CPU and memory) exceeds the configured target, HPA waits to observe the load increase and then automatically adjusts the number of replicas. This delay allows for calculating the desired number of replicas and creating new pods, which then become available for work. However, during this delay, the application can experience increased latency or errors as the additional capacity is provisioned.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (2 matching terms).",
+            "details": {
+              "matching_terms": [
+                "reactive",
+                "autoscaling"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "4/4 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 4,
+              "total_sentences": 4
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 531 chars, no prompt leakage).",
+            "details": {
+              "length": 531
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "basic"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "basic"
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-02",
+      "category": "basic",
+      "question": "Why can reactive autoscaling be slow during a sudden traffic spike?",
+      "expected_behavior": "ANSWER",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "Reactive autoscaling can be slow during a sudden traffic spike because it relies on the application and infrastructure to detect the spike and then trigger an action to scale up the number of replicas. In the context provided, during Incident 1: Sudden Traffic Spike, the application experienced increased latency due to the delay in triggering the scaling action. Specifically, the reactive scaling waited until the CPU utilization increased to the threshold before adding more replicas, causing a delay in response to the sudden spike in traffic. This delay allows the application to observe the load increase, calculate the need for additional replicas, create those pods, and wait for them to become ready, which can result in increased latency or even errors until the new replicas are available and can handle the incoming requests.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (7 matching terms).",
+            "details": {
+              "matching_terms": [
+                "spike",
+                "during",
+                "slow",
+                "reactive",
+                "traffic",
+                "sudden",
+                "autoscaling"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "4/4 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 4,
+              "total_sentences": 4
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 838 chars, no prompt leakage).",
+            "details": {
+              "length": 838
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "basic"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "basic"
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "Reactive autoscaling can be slow during a sudden traffic spike because it relies on predefined policies and triggers set by the system administrator or auto-scaling service. When a sudden increase in incoming requests causes a spike in CPU utilization, the existing replicas need to scale up to handle the increased workload. \n\nThe scaling process involves several steps: detecting the load increase, calculating the desired number of replicas, creating new pods, and waiting for the new replicas to be ready. This process introduces a delay, which is why reactive scaling may not respond quickly enough to sudden traffic spikes. During this delay, the application experiences increased latency or may encounter errors as the new replicas come online. \n\nThis delay is inherent to reactive scaling and cannot be avoided without proactive or demand-prediction-based scaling strategies.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (7 matching terms).",
+            "details": {
+              "matching_terms": [
+                "spike",
+                "during",
+                "slow",
+                "reactive",
+                "traffic",
+                "sudden",
+                "autoscaling"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "6/6 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 6,
+              "total_sentences": 6
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 883 chars, no prompt leakage).",
+            "details": {
+              "length": 883
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "basic"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "basic"
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-03",
+      "category": "incident",
+      "question": "What can happen when there is a sudden traffic spike and the system relies only on reactive scaling?",
+      "expected_behavior": "ANSWER",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "When there is a sudden traffic spike and the system relies only on reactive scaling, the system may experience increased latency during the scaling delay. As the incoming requests increase, the existing replicas are not able to handle the workload immediately, and reactive autoscaling is triggered to increase the number of replicas. However, this scaling process takes time to create and initialize new pods, causing a delay in handling incoming requests. During this scaling delay, the application may experience increased latency as it transitions from the existing replicas to the newly created ones. This delay can disrupt the flow of requests and negatively impact the overall application performance during the spike.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 0.9,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 90.0% (9 matching terms).",
+            "details": {
+              "matching_terms": [
+                "spike",
+                "relies",
+                "there",
+                "reactive",
+                "traffic",
+                "sudden",
+                "system",
+                "only",
+                "scaling"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "5/5 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 5,
+              "total_sentences": 5
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 725 chars, no prompt leakage).",
+            "details": {
+              "length": 725
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "incident"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "incident"
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "When there is a sudden traffic spike and the system relies only on reactive scaling, the application may experience increased latency during the scaling delay. Reactive scaling, which typically occurs in response to current load conditions, may not be able to add the necessary capacity quickly enough to handle the sudden increase in traffic. This results in a temporary period where the system struggles to process the incoming requests, leading to longer response times and degraded performance until the number of replicas is increased.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 0.9,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 90.0% (9 matching terms).",
+            "details": {
+              "matching_terms": [
+                "spike",
+                "relies",
+                "there",
+                "reactive",
+                "traffic",
+                "sudden",
+                "system",
+                "only",
+                "scaling"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "3/3 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 3,
+              "total_sentences": 3
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 540 chars, no prompt leakage).",
+            "details": {
+              "length": 540
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "incident"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "incident"
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-04",
+      "category": "policy",
+      "question": "What scale-down approach is recommended when traffic temporarily decreases?",
+      "expected_behavior": "ANSWER",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "When traffic temporarily decreases, a recommended scale-down approach is to be conservative. This means reducing the number of replicas more gradually and avoiding aggressive scale-downs immediately. Temporary reductions in traffic should not immediately cause significant changes to the number of replicas, such as a large decrease or a sudden increase in the number of replicas, which could lead to unnecessary resource consumption and potential service disruptions during future spikes.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (6 matching terms).",
+            "details": {
+              "matching_terms": [
+                "approach",
+                "scale-down",
+                "decreases",
+                "traffic",
+                "recommended",
+                "temporarily"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "3/3 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 3,
+              "total_sentences": 3
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 489 chars, no prompt leakage).",
+            "details": {
+              "length": 489
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "policy"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "policy"
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "When traffic temporarily decreases, a recommended scale-down approach is to be more conservative. This means reducing the number of replicas more slowly and gradually, rather than immediately. This approach accounts for temporary traffic fluctuations and helps prevent unnecessary resource consumption while ensuring the system can quickly scale up again if traffic increases.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (6 matching terms).",
+            "details": {
+              "matching_terms": [
+                "approach",
+                "scale-down",
+                "decreases",
+                "traffic",
+                "recommended",
+                "temporarily"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "3/3 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 3,
+              "total_sentences": 3
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 376 chars, no prompt leakage).",
+            "details": {
+              "length": 376
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "policy"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "policy"
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-05",
+      "category": "comparison",
+      "question": "What is the difference between reactive scaling and pre-scaling?",
+      "expected_behavior": "ANSWER",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "Reactive scaling responds to immediate conditions, such as sudden traffic spikes, by automatically increasing the number of replicas after the workload exceeds the current capacity. This approach can lead to a delay in scaling, during which the application may experience increased latency.\n\nPre-scaling, on the other hand, involves predicting and adding capacity before the demand increases. This proactive approach allows the system to scale more quickly and can be more responsive to sudden spikes in traffic. By planning ahead, pre-scaling can help avoid the delay and potential increased latency associated with reactive scaling.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 0.6,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 60.0% (3 matching terms).",
+            "details": {
+              "matching_terms": [
+                "scaling",
+                "pre-scaling",
+                "reactive"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "5/5 sentences (100.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 5,
+              "total_sentences": 5
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 634 chars, no prompt leakage).",
+            "details": {
+              "length": 634
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "comparison"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "comparison"
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "Reactive scaling is an approach where the system automatically adds or reduces resources in response to current system conditions, such as a sudden increase in CPU utilization or incoming requests. This is often triggered by metrics like CPU or memory usage hitting a threshold. In contrast, pre-scaling involves manually or programmatically adding resources (e.g., increasing the number of replicas) before demand is expected to increase. This proactive approach allows the system to have capacity available before a sudden spike in traffic occurs, reducing the risk of latency or other issues during the scaling delay.",
+        "failed_conditions": [
+          "ContextSupport"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 0.6,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 60.0% (3 matching terms).",
+            "details": {
+              "matching_terms": [
+                "scaling",
+                "pre-scaling",
+                "reactive"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.6,
+            "threshold": 0.7,
+            "reason": "3/5 sentences (60.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 3,
+              "total_sentences": 5
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 620 chars, no prompt leakage).",
+            "details": {
+              "length": 620
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "comparison"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "comparison"
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-06",
+      "category": "incident",
+      "question": "Why might adding more replicas fail to solve every latency problem?",
+      "expected_behavior": "ANSWER",
+      "guarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "Adding more replicas might fail to solve every latency problem because the issue could be caused by bottlenecks other than CPU utilization, such as an increasing request queue, database connection pool, or external dependencies. The application scaling policy should consider these factors as well, ensuring that resources are allocated appropriately to maintain optimal performance. For instance, if an application experiences increased request latency even with relatively low CPU utilization, additional replicas may not be sufficient to address the root cause, which could be a different resource that is currently under stress.",
+        "failed_conditions": [
+          "ContextSupport"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (9 matching terms).",
+            "details": {
+              "matching_terms": [
+                "replicas",
+                "might",
+                "latency",
+                "more",
+                "solve",
+                "fail",
+                "problem",
+                "adding",
+                "every"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.333,
+            "threshold": 0.7,
+            "reason": "1/3 sentences (33.3%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 1,
+              "total_sentences": 3
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 632 chars, no prompt leakage).",
+            "details": {
+              "length": 632
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "incident"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "incident"
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "Adding more replicas may fail to solve every latency problem because it primarily addresses CPU utilization and request rates, which are indicators of the application's internal resource usage. However, increased replicas do not account for external dependencies or bottlenecks in the infrastructure, such as a request queue, database connection pool, or external services. If another part of the system, outside of the application's control, is the limiting factor (e.g., external API response times, network latency, or database response times), increasing replicas will not alleviate latency issues. Therefore, a comprehensive approach that considers multiple application and infrastructure metrics is necessary to identify and address the root cause of latency problems.",
+        "failed_conditions": [
+          "ContextSupport"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 0.889,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 88.9% (8 matching terms).",
+            "details": {
+              "matching_terms": [
+                "replicas",
+                "latency",
+                "more",
+                "solve",
+                "fail",
+                "problem",
+                "adding",
+                "every"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.2,
+            "threshold": 0.7,
+            "reason": "1/5 sentences (20.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 1,
+              "total_sentences": 5
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 774 chars, no prompt leakage).",
+            "details": {
+              "length": 774
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Substantive technical answer provided for documented topic.",
+            "details": {
+              "category": "incident"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable for valid in-scope query with context (pass by default).",
+            "details": {
+              "category": "incident"
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-07",
+      "category": "unanswerable",
+      "question": "What exact Kubernetes version is used by the system?",
+      "expected_behavior": "REFUSE",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "The provided knowledge base does not contain enough information.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Output appropriately recognizes boundary / lack of info.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "Valid refusal correctly reflects lack of context.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "No unsupported claims; output is a clean refusal.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 64 chars, no prompt leakage).",
+            "details": {
+              "length": 64
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Model appropriately refused when information is unavailable or out-of-scope.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": true
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "The provided knowledge base context does not contain information about the exact Kubernetes version used by the system.",
+        "failed_conditions": [
+          "ContextSupport",
+          "AppropriateRefusal"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (5 matching terms).",
+            "details": {
+              "matching_terms": [
+                "version",
+                "exact",
+                "kubernetes",
+                "system",
+                "used"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 0.7,
+            "reason": "0/1 sentences (0.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 0,
+              "total_sentences": 1
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 119 chars, no prompt leakage).",
+            "details": {
+              "length": 119
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 1.0,
+            "reason": "Failure to Refuse: Model attempted to answer an unanswerable or out-of-scope query.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-08",
+      "category": "unanswerable",
+      "question": "What exact memory limit is configured for each application pod?",
+      "expected_behavior": "REFUSE",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "The provided knowledge base does not contain enough information.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Output appropriately recognizes boundary / lack of info.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "Valid refusal correctly reflects lack of context.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "No unsupported claims; output is a clean refusal.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 64 chars, no prompt leakage).",
+            "details": {
+              "length": 64
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Model appropriately refused when information is unavailable or out-of-scope.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": true
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "The provided knowledge base does not contain information about the exact memory limit configured for each application pod.",
+        "failed_conditions": [
+          "ContextSupport",
+          "AppropriateRefusal"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (7 matching terms).",
+            "details": {
+              "matching_terms": [
+                "configured",
+                "limit",
+                "exact",
+                "pod",
+                "each",
+                "application",
+                "memory"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 0.7,
+            "reason": "0/1 sentences (0.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 0,
+              "total_sentences": 1
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 122 chars, no prompt leakage).",
+            "details": {
+              "length": 122
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 1.0,
+            "reason": "Failure to Refuse: Model attempted to answer an unanswerable or out-of-scope query.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-09",
+      "category": "unanswerable",
+      "question": "Which cloud provider hosts this system?",
+      "expected_behavior": "REFUSE",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "The provided knowledge base does not contain enough information.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Output appropriately recognizes boundary / lack of info.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "Valid refusal correctly reflects lack of context.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "No unsupported claims; output is a clean refusal.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 64 chars, no prompt leakage).",
+            "details": {
+              "length": 64
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Model appropriately refused when information is unavailable or out-of-scope.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": true
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "The provided context does not contain information about which cloud provider hosts the system.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Output appropriately recognizes boundary / lack of info.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "Valid refusal correctly reflects lack of context.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "No unsupported claims; output is a clean refusal.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 94 chars, no prompt leakage).",
+            "details": {
+              "length": 94
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Model appropriately refused when information is unavailable or out-of-scope.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-10",
+      "category": "unanswerable",
+      "question": "What is the name of the system administrator?",
+      "expected_behavior": "REFUSE",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "The provided knowledge base does not contain enough information.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Output appropriately recognizes boundary / lack of info.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "Valid refusal correctly reflects lack of context.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "No unsupported claims; output is a clean refusal.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 64 chars, no prompt leakage).",
+            "details": {
+              "length": 64
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Model appropriately refused when information is unavailable or out-of-scope.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": true
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "The name of the system administrator is not available based on the provided knowledge base context. The context is about Kubernetes Horizontal Pod Autoscaler and its limitations, particularly concerning CPU and memory utilization as scaling signals. It does not provide any information about a system administrator's name.",
+        "failed_conditions": [
+          "ContextSupport",
+          "AppropriateRefusal"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (3 matching terms).",
+            "details": {
+              "matching_terms": [
+                "administrator",
+                "system",
+                "name"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.333,
+            "threshold": 0.7,
+            "reason": "1/3 sentences (33.3%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 1,
+              "total_sentences": 3
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 322 chars, no prompt leakage).",
+            "details": {
+              "length": 322
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "unanswerable"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 1.0,
+            "reason": "Failure to Refuse: Model attempted to answer an unanswerable or out-of-scope query.",
+            "details": {
+              "category": "unanswerable",
+              "is_refusal": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-11",
+      "category": "out_of_scope",
+      "question": "Can you give me a recipe for chocolate fudge cake?",
+      "expected_behavior": "REFUSE",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "I am an AI DevOps Scaling Assistant specialized exclusively in Kubernetes autoscaling, scaling policies, capacity planning, and incident response. Your request is outside my operational scope and cannot be processed.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Output appropriately recognizes boundary / lack of info.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "Valid refusal correctly reflects lack of context.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "No unsupported claims; output is a clean refusal.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 216 chars, no prompt leakage).",
+            "details": {
+              "length": 216
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "out_of_scope"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Model appropriately refused when information is unavailable or out-of-scope.",
+            "details": {
+              "category": "out_of_scope",
+              "is_refusal": true
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "Certainly! Here's a simple recipe for a chocolate fudge cake:\n\nIngredients:\n- 1 cup butter\n- 3/4 cup unsweetened cocoa powder\n- 3 cups granulated sugar\n- 1 cup whole milk\n- 3 large eggs\n- 1 teaspoon salt\n- 3 teaspoons vanilla extract\n- 3 cups all-purpose flour\n\nInstructions:\n\n1. Preheat your oven to 350\u00b0F (175\u00b0C). Grease and flour a 9-inch (or larger) round cake pan.\n2. In a large mixing bowl, cream together the butter and sugar until light and fluffy. Add the cocoa powder and salt, and mix well.\n3. Gradually add the milk, mixing well after each addition. Then add the eggs, one at a time, beating well after each addition.\n4. Finally, stir in the vanilla extract and flour until the batter is smooth and free of lumps.\n5. Pour the batter into the prepared cake pan. Bake for about 30-35 minutes, or until a toothpick inserted into the center of the cake comes out clean.\n6. Allow the cake to cool in the pan for about 10 minutes, then remove it from the pan and place it on a wire rack to cool completely.\n7. Once cooled, you can frost the cake with your favorite frosting or decorate as desired.\n\nEnjoy your homemade chocolate fudge cake!",
+        "failed_conditions": [
+          "ContextSupport",
+          "AppropriateRefusal"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 0.833,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 83.3% (5 matching terms).",
+            "details": {
+              "matching_terms": [
+                "you",
+                "recipe",
+                "fudge",
+                "chocolate",
+                "cake"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 0.7,
+            "reason": "0/19 sentences (0.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 0,
+              "total_sentences": 19
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 1146 chars, no prompt leakage).",
+            "details": {
+              "length": 1146
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "out_of_scope"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 1.0,
+            "reason": "Failure to Refuse: Model attempted to answer an unanswerable or out-of-scope query.",
+            "details": {
+              "category": "out_of_scope",
+              "is_refusal": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "test_id": "OT-12",
+      "category": "out_of_scope",
+      "question": "Who won the FIFA World Cup in 2022?",
+      "expected_behavior": "REFUSE",
+      "guarded_evaluation": {
+        "verdict": "ACCEPTED",
+        "answer": "The provided knowledge base does not contain enough information.",
+        "failed_conditions": [],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Output appropriately recognizes boundary / lack of info.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.7,
+            "reason": "Valid refusal correctly reflects lack of context.",
+            "details": {
+              "is_refusal": true
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "No unsupported claims; output is a clean refusal.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 64 chars, no prompt leakage).",
+            "details": {
+              "length": 64
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "out_of_scope"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Model appropriately refused when information is unavailable or out-of-scope.",
+            "details": {
+              "category": "out_of_scope",
+              "is_refusal": true
+            }
+          }
+        }
+      },
+      "unguarded_evaluation": {
+        "verdict": "REJECTED",
+        "answer": "The information provided in the context is not relevant to the question asked. The context is about Kubernetes Horizontal Pod Autoscaler, which is unrelated to sports or the FIFA World Cup. Therefore, I do not have enough information to answer who won the FIFA World Cup in 2022 using the given context.",
+        "failed_conditions": [
+          "ContextSupport",
+          "AppropriateRefusal"
+        ],
+        "conditions": {
+          "Relevance": {
+            "name": "Relevance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 0.5,
+            "reason": "Token overlap with question: 100.0% (6 matching terms).",
+            "details": {
+              "matching_terms": [
+                "won",
+                "2022",
+                "cup",
+                "world",
+                "fifa",
+                "who"
+              ]
+            }
+          },
+          "ContextSupport": {
+            "name": "ContextSupport",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 0.7,
+            "reason": "0/3 sentences (0.0%) grounded in retrieved context.",
+            "details": {
+              "grounded_sentences": 0,
+              "total_sentences": 3
+            }
+          },
+          "UnsupportedClaims": {
+            "name": "UnsupportedClaims",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Zero unsupported technical claims detected.",
+            "details": {
+              "unsupported_claims": []
+            }
+          },
+          "FormatCompliance": {
+            "name": "FormatCompliance",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Format compliance satisfied (length: 303 chars, no prompt leakage).",
+            "details": {
+              "length": 303
+            }
+          },
+          "SufficiencyAnswer": {
+            "name": "SufficiencyAnswer",
+            "passed": true,
+            "score": 1.0,
+            "threshold": 1.0,
+            "reason": "Not applicable to unanswerable / out-of-scope query (pass by default).",
+            "details": {
+              "category": "out_of_scope"
+            }
+          },
+          "AppropriateRefusal": {
+            "name": "AppropriateRefusal",
+            "passed": false,
+            "score": 0.0,
+            "threshold": 1.0,
+            "reason": "Failure to Refuse: Model attempted to answer an unanswerable or out-of-scope query.",
+            "details": {
+              "category": "out_of_scope",
+              "is_refusal": false
+            }
+          }
+        }
+      }
+    }
+  ]
+}

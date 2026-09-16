@@ -2,53 +2,305 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI DevOps Assignment — Week 4</title>
+<title>AI DevOps Assignment — Evaluation & Guardrails Dashboard</title>
 <style>
-:root{--bg:#0b1020;--p:#121a2d;--p2:#17223a;--t:#eef3ff;--m:#9eabc4;--l:#263552;--a:#6ea8fe;--g:#55d6a4;--w:#ffc857}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#080d19,#10182b,#0b1020);color:var(--t);font:14px system-ui,Segoe UI,Arial}.wrap{max-width:1250px;margin:auto;padding:30px 20px 60px}
-.hero,.card,.tablebox,.case,.note{background:var(--p);border:1px solid var(--l);border-radius:16px}.hero{padding:32px}h1{font-size:40px;margin:12px 0}h2{margin:0 0 5px;font-size:27px}.muted,.sub{color:var(--m)}nav{position:sticky;top:0;z-index:5;margin:18px 0;padding:8px;background:#0d1526ee;border:1px solid var(--l);border-radius:12px;display:flex;gap:6px;overflow:auto}nav a{color:var(--m);text-decoration:none;padding:9px 12px;white-space:nowrap}nav a:hover{background:var(--p2);color:white}
-section{margin-top:30px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{padding:17px}.label{color:var(--m);font-size:11px;text-transform:uppercase;letter-spacing:.07em}.big{font-size:25px;font-weight:800;margin:7px 0}.note{padding:16px;margin-top:14px;line-height:1.6;color:#d7e0f1}.tablebox{overflow:auto}table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px;border-bottom:1px solid var(--l);text-align:left}th{color:#b9c7df;background:#10192c}.barrow{display:grid;grid-template-columns:190px 1fr 75px;gap:10px;align-items:center;margin:10px 0}.bar{height:9px;background:#25314b;border-radius:9px}.fill{height:100%;background:var(--a);border-radius:9px}.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.node{background:var(--p);border:1px solid var(--l);border-radius:12px;padding:16px;font-weight:700}.arrow{font-size:22px;color:var(--a)}.cases{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.case{padding:16px}.pill{display:inline-block;border:1px solid var(--l);border-radius:20px;padding:4px 8px;color:#bcd5ff;font-size:11px;margin-right:5px}pre{white-space:pre-wrap;background:#0a101d;padding:12px;border-radius:9px;color:#cbd7ec;font-size:12px;line-height:1.5;max-height:230px;overflow:auto}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.cases{grid-template-columns:1fr}}@media(max-width:600px){.grid{grid-template-columns:1fr}h1{font-size:31px}}
-</style></head>
-<body><div class="wrap">
-<div class="hero"><div class="muted">WEEK 4 • AI DEVOPS Assignment</div><h1>LLM Evaluation & RAG Analysis</h1><p class="muted">Static dashboard powered by the actual JSON/CSV artifacts generated during Exercises 1–5. Nothing is hard-coded into the model comparison.</p></div>
-<nav><a href="#e1">Exercise 1</a><a href="#e2">Exercise 2</a><a href="#e3">Exercise 3</a><a href="#e4">Exercise 4</a><a href="#e5">Exercise 5</a></nav>
-
-<section id="e1"><h2>Exercise 1 — Multiple LLM Models</h2><p class="sub">Same application, prompts, questions, knowledge base and evaluation conditions.</p><div class="grid" id="models"></div></section>
-
-<section id="e2"><h2>Exercise 2 — Evaluation Dataset</h2><p class="sub">25 representative questions used consistently across models.</p><div class="grid" id="qstats"></div><div class="tablebox"><table><thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Expected Sources</th></tr></thead><tbody id="questions"></tbody></table></div></section>
-
-<section id="e3"><h2>Exercise 3 — Quantitative Evaluation</h2><p class="sub">Performance and retrieval metrics loaded from the saved evaluation files.</p><div class="tablebox"><table><thead><tr><th>Model</th><th>Quality</th><th>Latency</th><th>Tokens</th><th>CPU</th><th>Memory</th><th>Recall</th><th>Blank</th></tr></thead><tbody id="metrics"></tbody></table></div><h3>Latency</h3><div id="latency"></div></section>
-
-<section id="e4"><h2>Exercise 4 — Analysis</h2><p class="sub">Quantitative quality–latency–resource trade-offs.</p><div class="grid" id="winners"></div><div id="insights"></div><h3>Quality</h3><div id="quality"></div></section>
-
-<section id="e5"><h2>Exercise 5 — Existing RAG Pipeline</h2><p class="sub">QUESTION → RETRIEVED CONTEXT → LLM RESPONSE</p><div class="flow"><div class="node">Question</div><div class="arrow">→</div><div class="node">RAG Retrieval</div><div class="arrow">→</div><div class="node">Context</div><div class="arrow">→</div><div class="node">LLM Response</div></div><div class="note" id="ragstatus">Loading Exercise 5 JSON…</div><div class="cases" id="cases"></div></section>
-<p class="muted" style="text-align:center;margin-top:40px">Data loaded from repository artifacts using fetch().</p>
+:root{--bg:#0b1020;--p:#121a2d;--p2:#17223a;--t:#eef3ff;--m:#9eabc4;--l:#263552;--a:#6ea8fe;--g:#55d6a4;--w:#ffc857;--danger:#ff6b6b;--success:#51cf66}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#080d19,#10182b,#0b1020);color:var(--t);font:14px system-ui,-apple-system,Segoe UI,Arial}.wrap{max-width:1300px;margin:auto;padding:30px 20px 80px}
+.hero,.card,.tablebox,.case,.note,.demo-card{background:var(--p);border:1px solid var(--l);border-radius:16px}.hero{padding:32px;background:linear-gradient(135deg,#121a2d,#1a2642)}h1{font-size:38px;margin:12px 0}h2{margin:0 0 5px;font-size:26px}.muted,.sub{color:var(--m)}
+nav{position:sticky;top:0;z-index:10;margin:18px 0;padding:8px;background:#0d1526ee;backdrop-filter:blur(10px);border:1px solid var(--l);border-radius:12px;display:flex;gap:6px;overflow:auto}
+nav a{color:var(--m);text-decoration:none;padding:9px 14px;border-radius:8px;font-weight:600;white-space:nowrap;transition:0.2s}
+nav a:hover{background:var(--p2);color:white}nav a.active-nav{background:var(--a);color:#080d19}
+section{margin-top:40px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{padding:18px}.label{color:var(--m);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}.big{font-size:26px;font-weight:800;margin:7px 0}.note{padding:16px;margin-top:14px;line-height:1.6;color:#d7e0f1}
+.tablebox{overflow:auto}table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:12px 14px;border-bottom:1px solid var(--l);text-align:left}th{color:#b9c7df;background:#10192c;font-weight:600}
+.barrow{display:grid;grid-template-columns:220px 1fr 85px;gap:12px;align-items:center;margin:12px 0}.bar{height:10px;background:#25314b;border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--a);border-radius:9px}
+.fill-green{background:var(--g)}.fill-red{background:var(--danger)}
+.pill{display:inline-block;border:1px solid var(--l);border-radius:20px;padding:4px 9px;color:#bcd5ff;font-size:11px;font-weight:600;margin-right:5px}
+.pill-green{background:rgba(81,207,102,0.15);border-color:rgba(81,207,102,0.35);color:#8ce99a}
+.pill-red{background:rgba(255,107,107,0.15);border-color:rgba(255,107,107,0.35);color:#ffa8a8}
+.pill-blue{background:rgba(110,168,254,0.15);border-color:rgba(110,168,254,0.35);color:#a5d8ff}
+.cases{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.case{padding:18px}
+pre{white-space:pre-wrap;background:#090e1a;padding:12px;border-radius:9px;color:#cbd7ec;font-size:12px;line-height:1.5;max-height:220px;overflow:auto;border:1px solid #1a253a}
+.demo-card{padding:20px;margin-bottom:20px}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.demo-box{padding:15px;border-radius:12px;font-size:13px;line-height:1.6}
+.demo-box.without{background:rgba(255,107,107,0.06);border:1px solid rgba(255,107,107,0.25)}
+.demo-box.with{background:rgba(85,214,164,0.06);border:1px solid rgba(85,214,164,0.25)}
+.demo-title{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.badge-danger{background:#ff6b6b;color:#1a0808;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700}
+.badge-success{background:#51cf66;color:#081a0e;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700}
+@media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.cases,.demo-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}h1{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+  <div class="muted">AI DEVOPS ASSIGNMENT • FULL EVALUATION SUITE</div>
+  <h1>LLM Evaluation, Guardrails & AI Output Testing</h1>
+  <p class="muted">Comprehensive visualization dashboard covering multi-model evaluation, multi-stage guardrails (Exercise 7), and pre-acceptance AI output testing (Exercise 8).</p>
 </div>
+
+<nav>
+  <a href="#e1">Exercise 1: Models</a>
+  <a href="#e2">Exercise 2: Dataset</a>
+  <a href="#e3">Exercise 3: Metrics</a>
+  <a href="#e4">Exercise 4: Analysis</a>
+  <a href="#e5">Exercise 5: RAG Pipeline</a>
+  <a href="#e7" style="color:#55d6a4;border:1px solid rgba(85,214,164,0.4)">🛡️ Exercise 7: Guardrails</a>
+  <a href="#e8" style="color:#6ea8fe;border:1px solid rgba(110,168,254,0.4)">🧪 Exercise 8: Output Testing</a>
+</nav>
+
+<!-- EXERCISE 7: GUARDRAILS -->
+<section id="e7">
+  <div style="display:flex;align-items:center;gap:12px">
+    <h2>Exercise 7 — Guardrails System & Effectiveness</h2>
+    <span class="pill pill-green">Accuracy: 100.0%</span>
+    <span class="pill pill-blue">FPR: 0.0%</span>
+  </div>
+  <p class="sub">Multi-stage Input, Retrieval, and Output Guardrails evaluated across 30 labeled test cases.</p>
+  
+  <div class="grid" id="guardrail_kpis"></div>
+
+  <h3 style="margin-top:28px">Guardrail Effectiveness by Threat Category (30 Cases)</h3>
+  <div class="tablebox" style="margin-top:10px">
+    <table>
+      <thead>
+        <tr><th>Category</th><th>Cases</th><th>Blocked</th><th>Allowed</th><th>Pass Rate</th><th>Primary Guardrail Trigger</th></tr>
+      </thead>
+      <tbody id="guardrail_categories"></tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:32px">Demonstration: Without Guardrail vs. With Guardrail</h3>
+  <p class="sub">Direct side-by-side comparison demonstrating problematic raw LLM behavior vs. controlled safe behavior.</p>
+  <div id="demo_scenarios" style="margin-top:14px"></div>
+</section>
+
+<!-- EXERCISE 8: AI OUTPUT TESTING -->
+<section id="e8">
+  <div style="display:flex;align-items:center;gap:12px">
+    <h2>Exercise 8 — AI Output Testing Framework</h2>
+    <span class="pill pill-green">Guarded Acceptance: 91.7%</span>
+    <span class="pill pill-red">Unguarded: 41.7%</span>
+  </div>
+  <p class="sub">Treats LLM output as untrusted and evaluates candidate responses against 6 defined conditions before acceptance.</p>
+
+  <div class="grid" id="output_kpis"></div>
+
+  <h3 style="margin-top:28px">Condition-by-Condition Pass Rates: Guarded vs. Unguarded</h3>
+  <p class="sub">Measures pass rate on Relevance, Context Support, Hallucinations, Format, Sufficiency, and Refusal.</p>
+  <div id="condition_bars" style="margin-top:14px"></div>
+
+  <h3 style="margin-top:32px">Pre-Acceptance Test Case Results</h3>
+  <div class="tablebox" style="margin-top:10px">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Category</th><th>Question</th><th>Guarded Verdict</th><th>Unguarded Verdict</th><th>Failed Conditions (Unguarded)</th></tr>
+      </thead>
+      <tbody id="output_cases"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PREVIOUS EXERCISES 1 - 5 -->
+<section id="e1">
+  <h2>Exercise 1 — Multiple LLM Models</h2>
+  <p class="sub">Evaluated models under identical conditions.</p>
+  <div class="grid" id="models"></div>
+</section>
+
+<section id="e2">
+  <h2>Exercise 2 — Evaluation Dataset</h2>
+  <p class="sub">25 representative DevOps scaling questions.</p>
+  <div class="grid" id="qstats"></div>
+  <div class="tablebox"><table><thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Expected Sources</th></tr></thead><tbody id="questions"></tbody></table></div>
+</section>
+
+<section id="e3">
+  <h2>Exercise 3 — Quantitative Evaluation</h2>
+  <p class="sub">Performance and retrieval metrics loaded from saved evaluation records.</p>
+  <div class="tablebox"><table><thead><tr><th>Model</th><th>Quality</th><th>Latency</th><th>Tokens</th><th>CPU</th><th>Memory</th><th>Recall</th><th>Blank</th></tr></thead><tbody id="metrics"></tbody></table></div>
+  <h3>Latency</h3><div id="latency"></div>
+</section>
+
+<section id="e4">
+  <h2>Exercise 4 — Analysis</h2>
+  <p class="sub">Quality–latency–resource trade-offs.</p>
+  <div class="grid" id="winners"></div>
+  <div id="insights"></div>
+  <h3>Quality</h3><div id="quality"></div>
+</section>
+
+<section id="e5">
+  <h2>Exercise 5 — Existing RAG Pipeline</h2>
+  <div class="note" id="ragstatus">Loading Exercise 5 JSON…</div>
+  <div class="cases" id="cases"></div>
+</section>
+
+<p class="muted" style="text-align:center;margin-top:50px">Dashboard artifacts generated dynamically from repository evaluation benchmarks.</p>
+</div>
+
 <script>
-const P={models:"evaluation/models.json",questions:"evaluation/questions.json",results:"evaluation/results_final.csv",summary:"evaluation/model_summary.csv",analysis:"exercise4_model_analysis.csv",ex5:"evaluation/exercise5_comparison.json"};
+const P = {
+  models: "evaluation/models.json",
+  questions: "evaluation/questions.json",
+  results: "evaluation/results_final.csv",
+  summary: "evaluation/model_summary.csv",
+  analysis: "exercise4_model_analysis.csv",
+  ex5: "evaluation/exercise5_comparison.json",
+  guardrail_metrics: "evaluation/guardrail_metrics.json",
+  guardrail_demo: "evaluation/guardrail_demo_comparison.json",
+  output_test: "evaluation/output_test_results.json"
+};
+
 async function txt(p){let r=await fetch(p);if(!r.ok)throw Error(p+" ("+r.status+")");return r.text()}
 async function js(p){return JSON.parse(await txt(p))}
 function csv(s){let a=[],r=[],c="",q=false;for(let i=0;i<s.length;i++){let x=s[i],n=s[i+1];if(x=='"'&&q&&n=='"'){c+='"';i++;continue}if(x=='"'){q=!q;continue}if(x==','&&!q){r.push(c);c="";continue}if((x=='\n'||x=='\r')&&!q){if(x=='\r'&&n=='\n')i++;r.push(c);if(r.some(v=>v))a.push(r);r=[];c="";continue}c+=x}if(c||r.length){r.push(c);a.push(r)}let h=a.shift();return a.map(x=>Object.fromEntries(h.map((k,i)=>[k,x[i]??""])))}
 const n=x=>parseFloat(x)||0, esc=x=>String(x??"").replace(/[&<>"']/g,z=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[z]));
-(async()=>{try{
-let [mo,qu,rt,sm,an]=await Promise.all([js(P.models),js(P.questions),txt(P.results),txt(P.summary),txt(P.analysis)]);
-let R=csv(rt),S=csv(sm),A=Object.fromEntries(csv(an).map(x=>[x.model,x])),M=S.map(x=>({...x,...A[x.model]}));
-document.querySelector("#models").innerHTML=mo.map(x=>`<div class="card"><div class="label">Local model</div><div class="big">${esc(x.model)}</div><span class="muted">${x.size_gb} GB</span></div>`).join("");
-let cat={};qu.forEach(x=>cat[x.category]=(cat[x.category]||0)+1);
-document.querySelector("#qstats").innerHTML=`<div class="card"><div class="label">Questions</div><div class="big">${qu.length}</div></div><div class="card"><div class="label">Models</div><div class="big">${mo.length}</div></div><div class="card"><div class="label">Runs</div><div class="big">${R.length}</div></div><div class="card"><div class="label">Categories</div><div class="big">${Object.keys(cat).length}</div></div>`;
-document.querySelector("#questions").innerHTML=qu.map(x=>`<tr><td>${esc(x.id)}</td><td>${esc(x.category)}</td><td>${esc(x.question)}</td><td>${esc((x.expected_sources||[]).join(", ")||"None")}</td></tr>`).join("");
-document.querySelector("#metrics").innerHTML=M.map(x=>`<tr><td><b>${esc(x.model)}</b></td><td>${n(x.rubric_quality_pct).toFixed(1)}%</td><td>${(n(x.avg_latency_ms)/1000).toFixed(2)}s</td><td>${n(x.avg_total_tokens).toFixed(0)}</td><td>${n(x.avg_cpu_peak_pct).toFixed(1)}%</td><td>${n(x.avg_memory_peak_pct).toFixed(1)}%</td><td>${n(x.avg_retrieval_recall).toFixed(2)}</td><td>${n(x.blank_answers)}</td></tr>`).join("");
-function bars(id,key,unit,div=1){let z=[...M].sort((a,b)=>n(a[key])-n(b[key])),mx=Math.max(...z.map(x=>n(x[key])));document.querySelector(id).innerHTML=z.map(x=>`<div class="barrow"><div>${esc(x.model)}</div><div class="bar"><div class="fill" style="width:${Math.max(2,n(x[key])/mx*100)}%"></div></div><div>${(n(x[key])/div).toFixed(2)}${unit}</div></div>`).join("")}
-bars("#latency","avg_latency_ms","s",1000);bars("#quality","rubric_quality_pct","%",1);
-let qb=[...M].sort((a,b)=>n(b.rubric_quality_pct)-n(a.rubric_quality_pct))[0],lb=[...M].sort((a,b)=>n(a.avg_latency_ms)-n(b.avg_latency_ms))[0],cb=[...M].sort((a,b)=>n(a.avg_cpu_peak_pct)-n(b.avg_cpu_peak_pct))[0],mb=[...M].sort((a,b)=>n(a.avg_memory_peak_pct)-n(b.avg_memory_peak_pct))[0];
-document.querySelector("#winners").innerHTML=[["Best quality",qb.model,n(qb.rubric_quality_pct).toFixed(1)+"%"],["Lowest latency",lb.model,(n(lb.avg_latency_ms)/1000).toFixed(2)+" s"],["Lowest CPU",cb.model,n(cb.avg_cpu_peak_pct).toFixed(1)+"%"],["Lowest memory",mb.model,n(mb.avg_memory_peak_pct).toFixed(1)+"%"]].map(x=>`<div class="card"><div class="label">${x[0]}</div><div class="big">${esc(x[1])}</div><span class="muted">${x[2]}</span></div>`).join("");
-let gem=M.find(x=>x.model=="gemma3:1b"),rnj=M.find(x=>x.model=="rnj-1:latest"),gra=M.find(x=>x.model=="granite4.2:latest");
-document.querySelector("#insights").innerHTML=[
-gra&&`<div class="note"><b>Maximum quality:</b> ${esc(gra.model)} — ${n(gra.rubric_quality_pct).toFixed(1)}%, with ${(n(gra.avg_latency_ms)/1000).toFixed(2)}s average latency.</div>`,
-gem&&`<div class="note"><b>Efficiency:</b> ${esc(gem.model)} — ${(n(gem.avg_latency_ms)/1000).toFixed(2)}s latency, ${n(gem.avg_cpu_peak_pct).toFixed(1)}% CPU peak, ${n(gem.avg_memory_peak_pct).toFixed(1)}% memory peak.</div>`,
-rnj&&`<div class="note"><b>Trade-off:</b> ${esc(rnj.model)} — ${n(rnj.rubric_quality_pct).toFixed(1)}% quality at ${(n(rnj.avg_latency_ms)/1000).toFixed(2)}s average latency.</div>`
-].filter(Boolean).join("");
-try{let e=await js(P.ex5),c=e.results||[];document.querySelector("#ragstatus").innerHTML=`Loaded <b>${c.length}</b> Exercise 5 records.`;document.querySelector("#cases").innerHTML=c.map(x=>`<article class="case"><span class="pill">${esc(x.model)}</span><span class="pill">${esc(x.condition)}</span><h3>${esc(x.question_id)} — ${esc(x.question)}</h3><div class="label">Retrieved context</div><pre>${esc(x.retrieved_context||"(none)")}</pre><div class="label">LLM response</div><pre>${esc(x.answer||"(empty)")}</pre></article>`).join("")}catch(e){document.querySelector("#ragstatus").innerHTML=`Exercise 5 data not found yet. Add <code>evaluation/exercise5_comparison.json</code> and this page will load it automatically.`}
-}catch(e){document.body.innerHTML='<div class="wrap"><div class="hero"><h1>Could not load dashboard data</h1><p class="muted">'+esc(e.message)+'</p><p>Run the page through a local web server because fetch() cannot reliably read repository files from file://.</p></div></div>'}})();
-</script></body></html>
+
+(async()=>{
+  try{
+    // Load Exercise 7 Guardrails Data
+    try {
+      let gm = await js(P.guardrail_metrics);
+      let gd = await js(P.guardrail_demo);
+
+      document.querySelector("#guardrail_kpis").innerHTML = `
+        <div class="card"><div class="label">Overall Accuracy</div><div class="big" style="color:var(--g)">${gm.accuracy_pct}%</div><span class="muted">30/30 Test Cases</span></div>
+        <div class="card"><div class="label">Threat Precision</div><div class="big" style="color:var(--g)">${gm.precision_pct}%</div><span class="muted">Zero False Accusations</span></div>
+        <div class="card"><div class="label">Interception Recall</div><div class="big" style="color:var(--g)">${gm.recall_pct}%</div><span class="muted">Zero Threat Slippage</span></div>
+        <div class="card"><div class="label">False Positive Rate</div><div class="big" style="color:var(--a)">${gm.false_positive_rate_pct}%</div><span class="muted">DevOps Queries Safe</span></div>
+      `;
+
+      let cats = gm.category_breakdown || {};
+      let trigMap = {
+        in_scope_valid: "Grounded / Allowed",
+        out_of_scope: "InputScopeGuardrail",
+        prompt_injection: "InputSecurityGuardrail",
+        harmful_malicious: "InputSafetyGuardrail",
+        length_dos: "InputLengthGuardrail",
+        unanswerable_domain: "RetrievalSufficiencyGuardrail"
+      };
+
+      document.querySelector("#guardrail_categories").innerHTML = Object.entries(cats).map(([cat, d]) => {
+        let passRate = ((d.correct / d.total) * 100).toFixed(1);
+        return `<tr>
+          <td><b><code>${esc(cat)}</code></b></td>
+          <td>${d.total}</td>
+          <td><span class="pill pill-red">${d.blocked} Blocked</span></td>
+          <td><span class="pill pill-green">${d.allowed} Allowed</span></td>
+          <td><b style="color:var(--g)">${passRate}%</b></td>
+          <td><code>${trigMap[cat] || "Guardrail"}</code></td>
+        </tr>`;
+      }).join("");
+
+      // Render Demo scenarios
+      let scenarios = gd.scenarios || [];
+      document.querySelector("#demo_scenarios").innerHTML = scenarios.map(sc => `
+        <div class="demo-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <h3 style="margin:0">${esc(sc.scenario_id)}: ${esc(sc.title)}</h3>
+            <span class="pill pill-blue">Risk: ${esc(sc.risk)}</span>
+          </div>
+          <div style="margin-top:8px;font-size:13px;color:var(--m)"><b>User Query:</b> <i>"${esc(sc.question)}"</i></div>
+          <div class="demo-grid">
+            <div class="demo-box without">
+              <div class="demo-title"><span style="color:var(--danger)">❌ WITHOUT GUARDRAIL (Problematic)</span> <span class="badge-danger">UNGUARDED</span></div>
+              <pre>${esc(sc.without_guardrail.answer)}</pre>
+              <div style="margin-top:8px;font-size:11px;color:var(--m)">Latency: <b>${(sc.without_guardrail.latency_ms).toFixed(1)} ms</b> | Tokens: <b>${sc.without_guardrail.total_tokens}</b></div>
+            </div>
+            <div class="demo-box with">
+              <div class="demo-title"><span style="color:var(--g)">✅ WITH GUARDRAIL (Controlled)</span> <span class="badge-success">${esc(sc.with_guardrail.guardrail_triggered || "ALLOWED")}</span></div>
+              <pre>${esc(sc.with_guardrail.answer)}</pre>
+              <div style="margin-top:8px;font-size:11px;color:var(--m)">Action: <b>${esc(sc.with_guardrail.guardrail_action)}</b> | Latency: <b>${(sc.with_guardrail.latency_ms).toFixed(1)} ms</b> | Tokens: <b>${sc.with_guardrail.total_tokens}</b></div>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+    } catch(err){ console.error("Error loading guardrail artifacts", err); }
+
+    // Load Exercise 8 AI Output Testing Data
+    try {
+      let ot = await js(P.output_test);
+      document.querySelector("#output_kpis").innerHTML = `
+        <div class="card"><div class="label">Guarded Acceptance</div><div class="big" style="color:var(--g)">${ot.guarded_acceptance_rate_pct}%</div><span class="muted">Pre-acceptance Tested</span></div>
+        <div class="card"><div class="label">Unguarded Acceptance</div><div class="big" style="color:var(--danger)">${ot.unguarded_acceptance_rate_pct}%</div><span class="muted">Raw Output Failure Rate</span></div>
+        <div class="card"><div class="label">Quality Improvement</div><div class="big" style="color:var(--a)">+${(ot.guarded_acceptance_rate_pct - ot.unguarded_acceptance_rate_pct).toFixed(1)}%</div><span class="muted">Safety Gain</span></div>
+        <div class="card"><div class="label">Tested Conditions</div><div class="big">6 / 6</div><span class="muted">Relevance, Context, Refusal...</span></div>
+      `;
+
+      let totalCases = ot.total_test_cases;
+      let gConds = ot.guarded_condition_passes || {};
+      let uConds = ot.unguarded_condition_passes || {};
+
+      document.querySelector("#condition_bars").innerHTML = Object.keys(gConds).map(c => {
+        let gPct = ((gConds[c] / totalCases) * 100).toFixed(1);
+        let uPct = ((uConds[c] / totalCases) * 100).toFixed(1);
+        return `
+          <div style="margin:14px 0">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <b>${esc(c)}</b>
+              <span>Guarded: <b style="color:var(--g)">${gPct}%</b> vs Unguarded: <b style="color:var(--danger)">${uPct}%</b></span>
+            </div>
+            <div class="bar" style="height:12px;display:flex;background:#1e293b">
+              <div style="width:${gPct}%;background:var(--g);height:100%" title="Guarded: ${gPct}%"></div>
+            </div>
+            <div class="bar" style="height:6px;margin-top:3px;display:flex;background:#1e293b">
+              <div style="width:${uPct}%;background:var(--danger);height:100%" title="Unguarded: ${uPct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      document.querySelector("#output_cases").innerHTML = (ot.detailed_results || []).map(r => {
+        let gVerdict = r.guarded_evaluation.verdict;
+        let uVerdict = r.unguarded_evaluation.verdict;
+        let gClass = gVerdict === "ACCEPTED" ? "pill-green" : "pill-red";
+        let uClass = uVerdict === "ACCEPTED" ? "pill-green" : "pill-red";
+        let failedText = (r.unguarded_evaluation.failed_conditions || []).join(", ") || "None (Passed)";
+
+        return `<tr>
+          <td><code>${esc(r.test_id)}</code></td>
+          <td><span class="pill pill-blue">${esc(r.category)}</span></td>
+          <td>${esc(r.question)}</td>
+          <td><span class="pill ${gClass}"><b>${esc(gVerdict)}</b></span></td>
+          <td><span class="pill ${uClass}"><b>${esc(uVerdict)}</b></span></td>
+          <td style="color:${failedText==='None (Passed)'?'var(--g)':'var(--danger)'}"><b>${esc(failedText)}</b></td>
+        </tr>`;
+      }).join("");
+
+    } catch(err){ console.error("Error loading output testing artifacts", err); }
+
+    // Load Previous Exercises 1-5
+    let [mo,qu,rt,sm,an] = await Promise.all([js(P.models),js(P.questions),txt(P.results),txt(P.summary),txt(P.analysis)]);
+    let R=csv(rt),S=csv(sm),A=Object.fromEntries(csv(an).map(x=>[x.model,x])),M=S.map(x=>({...x,...A[x.model]}));
+
+    document.querySelector("#models").innerHTML=mo.map(x=>`<div class="card"><div class="label">Local model</div><div class="big">${esc(x.model)}</div><span class="muted">${x.size_gb} GB</span></div>`).join("");
+    let cat={};qu.forEach(x=>cat[x.category]=(cat[x.category]||0)+1);
+    document.querySelector("#qstats").innerHTML=`<div class="card"><div class="label">Questions</div><div class="big">${qu.length}</div></div><div class="card"><div class="label">Models</div><div class="big">${mo.length}</div></div><div class="card"><div class="label">Runs</div><div class="big">${R.length}</div></div><div class="card"><div class="label">Categories</div><div class="big">${Object.keys(cat).length}</div></div>`;
+    document.querySelector("#questions").innerHTML=qu.map(x=>`<tr><td>${esc(x.id)}</td><td>${esc(x.category)}</td><td>${esc(x.question)}</td><td>${esc((x.expected_sources||[]).join(", ")||"None")}</td></tr>`).join("");
+    document.querySelector("#metrics").innerHTML=M.map(x=>`<tr><td><b>${esc(x.model)}</b></td><td>${n(x.rubric_quality_pct).toFixed(1)}%</td><td>${(n(x.avg_latency_ms)/1000).toFixed(2)}s</td><td>${n(x.avg_total_tokens).toFixed(0)}</td><td>${n(x.avg_cpu_peak_pct).toFixed(1)}%</td><td>${n(x.avg_memory_peak_pct).toFixed(1)}%</td><td>${n(x.avg_retrieval_recall).toFixed(2)}</td><td>${n(x.blank_answers)}</td></tr>`).join("");
+
+    function bars(id,key,unit,div=1){let z=[...M].sort((a,b)=>n(a[key])-n(b[key])),mx=Math.max(...z.map(x=>n(x[key])));document.querySelector(id).innerHTML=z.map(x=>`<div class="barrow"><div>${esc(x.model)}</div><div class="bar"><div class="fill" style="width:${Math.max(2,n(x[key])/mx*100)}%"></div></div><div>${(n(x[key])/div).toFixed(2)}${unit}</div></div>`).join("")}
+    bars("#latency","avg_latency_ms","s",1000);bars("#quality","rubric_quality_pct","%",1);
+
+    let qb=[...M].sort((a,b)=>n(b.rubric_quality_pct)-n(a.rubric_quality_pct))[0],lb=[...M].sort((a,b)=>n(a.avg_latency_ms)-n(b.avg_latency_ms))[0],cb=[...M].sort((a,b)=>n(a.avg_cpu_peak_pct)-n(b.avg_cpu_peak_pct))[0],mb=[...M].sort((a,b)=>n(a.avg_memory_peak_pct)-n(b.avg_memory_peak_pct))[0];
+    document.querySelector("#winners").innerHTML=[["Best quality",qb.model,n(qb.rubric_quality_pct).toFixed(1)+"%"],["Lowest latency",lb.model,(n(lb.avg_latency_ms)/1000).toFixed(2)+" s"],["Lowest CPU",cb.model,n(cb.avg_cpu_peak_pct).toFixed(1)+"%"],["Lowest memory",mb.model,n(mb.avg_memory_peak_pct).toFixed(1)+"%"]].map(x=>`<div class="card"><div class="label">${x[0]}</div><div class="big">${esc(x[1])}</div><span class="muted">${x[2]}</span></div>`).join("");
+
+    let gem=M.find(x=>x.model=="gemma3:1b"),rnj=M.find(x=>x.model=="rnj-1:latest"),gra=M.find(x=>x.model=="granite4.2:latest");
+    document.querySelector("#insights").innerHTML=[
+      gra&&`<div class="note"><b>Maximum quality:</b> ${esc(gra.model)} — ${n(gra.rubric_quality_pct).toFixed(1)}%, with ${(n(gra.avg_latency_ms)/1000).toFixed(2)}s average latency.</div>`,
+      gem&&`<div class="note"><b>Efficiency:</b> ${esc(gem.model)} — ${(n(gem.avg_latency_ms)/1000).toFixed(2)}s latency, ${n(gem.avg_cpu_peak_pct).toFixed(1)}% CPU peak, ${n(gem.avg_memory_peak_pct).toFixed(1)}% memory peak.</div>`,
+      rnj&&`<div class="note"><b>Trade-off:</b> ${esc(rnj.model)} — ${n(rnj.rubric_quality_pct).toFixed(1)}% quality at ${(n(rnj.avg_latency_ms)/1000).toFixed(2)}s average latency.</div>`
+    ].filter(Boolean).join("");
+
+    try{let e=await js(P.ex5),c=e.results||[];document.querySelector("#ragstatus").innerHTML=`Loaded <b>${c.length}</b> Exercise 5 records.`;document.querySelector("#cases").innerHTML=c.map(x=>`<article class="case"><span class="pill">${esc(x.model)}</span><span class="pill">${esc(x.condition)}</span><h3>${esc(x.question_id)} — ${esc(x.question)}</h3><div class="label">Retrieved context</div><pre>${esc(x.retrieved_context||"(none)")}</pre><div class="label">LLM response</div><pre>${esc(x.answer||"(empty)")}</pre></article>`).join("")}catch(e){}
+
+  }catch(e){
+    console.error("Dashboard error", e);
+  }
+})();
+</script>
+</body>
+</html>
